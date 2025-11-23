@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<script src="js/jquery-2.1.3.min.js"></script>
+<link rel="stylesheet" href="css/sample.css">
+<title>じゃんけん</title>
+</head>
+<body>
+
+<header>
+  <h1 id="title">じゃんけんの向こう側へ…</h1>
+</header>
+
+<main>
+
+  <div id="column1">相手の出した手は▶「<span id="pc_hands">なに？</span>」</div>
+  <div id="column2">あなたの出した手は▶「<span id="your_hands">なに？</span>」</div>
+
+  <div id="tairyoku">
+    <table border="0" width="80%" align="center">
+      <tr>
+        <td width="30%" height="90%">相手の体力
+        </td>
+        <td id ="enemy_tairyoku" width="70%" height="90%">
+
+          <!-- 体力ゲージ -->
+          <table id="tairyoku_gauge" width="100%" align="left">
+            <tr>
+              <td idheight="90%"></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+        <!-- <ul id="enemy_tairyoku">
+          <li id="g1"><div id= "gauge1" width="100%">1</div></li>
+          <li id="g2"><div id= "gauge2" width="100px">2</div></li>
+          <li id="g3"><div id= "gauge3" width="100%">3</div></li>
+          <li id="g4"><div id= "gauge4" width="100%">4</div></li>
+          <li id="g5"><div id= "gauge5" width="100%">5</div></li>
+          <li id="g6"><div id= "gauge5" width="100%">6</div></li>
+          <li id="g7"><div id= "gauge7" width="100%">7</div></li>
+          <li id="g8"><div id= "gauge8" width="100%">8</div></li>
+          <li id="g9"><div id= "gauge9" width="100%">9</div></li>
+          <li id="g10"><div id= "gauge10" width="100%">0</div></li>
+          <li id="g1"></li>
+          <li id="g2"></li>
+          <li id="g3"></li>
+          <li id="g4"></li>
+          <li id="g5"></li>
+          <li id="g6"></li>
+          <li id="g7"></li>
+          <li id="g8"></li>
+          <li id="g9"></li>
+          <li id="g10"></li>
+        </ul> -->
+
+        <!-- divでのチャレンジ -->
+        <!-- <div width="100%">
+          <div id="g1" width="100%">　</div>
+          <div id="g2">　</div>
+          <div id="g3" width="100%">　</div>
+          <div id="g4" width="10%">　</div>
+          <div id="g5" width="10%">　</div>
+          <div id="g6" width="10%">　</div>
+          <div id="g7" width="10%">　</div>
+          <div id="g8" width="10%">　</div>
+          <div id="g9" width="10%">　</div>
+          <div id="g10" width="10%">　</div>
+
+
+        </div> -->
+  </div>
+
+
+    <ul id="your_choice" width="80%">
+      <li id="gu_btn"><img src="img/img_gu.png" alt="グー" width="100%">グー</li>
+      <li id="cho_btn"><img src="img/img_cho.png" alt="チョキ" width="100%">チョキ</li>
+      <li id="par_btn"><img src="img/img_pa.png" alt="パー" width="100%">パー</li>
+    </ul>
+
+  <div id="setsumei">あなたの【<span id="judgment">？？？？</span>】</div>
+  <div><button id="kakuto_btn">格闘モードにする</button></div>
+</main>
+
+<footer></footer>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+//じゃんけん用のSCRIPTを書いてください
+//$(#kakuto).
+
+//変数
+  let mode ="nomal";
+  let you ="あなた初期";
+  let enemy ="敵初期";
+  let enemy_tairyoku = 10;
+  let damage = 0;
+  let make = 0;
+
+//初期設定
+  $("#kakuto_btn").fadeOut(0);
+  $("#tairyoku").fadeOut(0);
+
+
+//格闘モード選択
+function kakuto(){
+  $("#kakuto_btn").fadeOut(2000);
+}
+
+
+$("#gu_btn").on("click",function(){
+  you = "gu";
+  $("#your_hands").html("グー");
+});
+$("#cho_btn").on("click",function(){
+  you = "cho";
+  $("#your_hands").html("チョキ");
+});
+$("#par_btn").on("click",function(){
+  you = "par";
+  $("#your_hands").html("パー");
+});
+
+//結果処理
+
+$("#your_choice").on("click",function(){
+    // alert("ok");
+    // //乱数１〜３
+
+    if(mode == "nomal"){
+      const r = Math.ceil(Math.random()*3);//繰り上げ関数
+      //以下コンピュータ手の分岐処理
+      if(r == 1 ){//グー
+        enemy = "gu";
+        $("#pc_hands").html("グー");
+      }else if(r == 2){
+        enemy = "cho";
+        $("#pc_hands").html("チョキ");
+      }else if(r == 3){
+        enemy = "par";
+        $("#pc_hands").html("パー");
+      } 
+      console.log(you);
+      console.log(enemy);
+      if(you == "gu" && enemy == "cho" || you == "cho" && enemy == "par" || you == "par" && enemy == "gu" ){//あなたの勝ち
+        $("#judgment").html("勝ち！");
+      }else if(you == "gu" && enemy == "par" || you == "cho" && enemy == "gu" || you == "par" && enemy == "cho" ){//あなたのまけ
+        $("#judgment").html("負け！");
+
+          if(make<3){
+            make += 1;
+          }else{
+            $("#kakuto_btn").fadeIn(2000);
+          }
+
+      }else if(you == enemy ){//あいこ
+        $("#judgment").html("あいこ");
+      }
+
+    //ダメージ処理
+    }else if(mode == "kakuto"){
+      damage += 1;
+      if(damage == 1){
+        console.log(damage);
+        $("#tairyoku_gauge").width("90%"); 
+        $("#column2").html('<img src="img/k2.png" width="500px">');
+      }
+      if(damage == 2){
+        console.log(damage);
+        $("#tairyoku_gauge").width("80%"); 
+        $("#column2").html('<img src="img/k3.png" width="500px">');
+      }
+      if(damage == 3){
+        console.log(damage);
+        $("#tairyoku_gauge").width("70%"); 
+        $("#column2").html('<img src="img/k1.png" width="500px">');
+      }
+      if(damage == 4){
+        console.log(damage);
+        $("#tairyoku_gauge").width("60%"); 
+        $("#column2").html('<img src="img/k4.png" width="500px">');
+      }
+      if(damage == 5){
+        console.log(damage);
+        $("#tairyoku_gauge").width("50%"); 
+        $("#column2").html('<img src="img/k2.png" width="500px">');
+      }
+      if(damage == 6){
+        console.log(damage);
+        $("#tairyoku_gauge").width("40%"); 
+        $("#column2").html('<img src="img/k3.png" width="500px">');
+      }
+      if(damage == 7){
+        console.log(damage);
+        $("#tairyoku_gauge").width("30%"); 
+        $("#column2").html('<img src="img/k5.png" width="500px">');
+      }
+      if(damage == 8){
+        console.log(damage);
+        $("#tairyoku_gauge").width("20%"); 
+        $("#column2").html('<img src="img/k6.png" width="500px">');
+      }
+      if(damage == 9){
+        console.log(damage);
+        $("#tairyoku_gauge").width("10%"); 
+        $("#column2").html('<img src="img/k7.png" width="500px">');
+      }
+      if(damage == 10){
+        console.log(damage);
+        $("#tairyoku_gauge").fadeOut(); 
+        $("#column2").html('<img src="img/k8.png" width="500px">');
+        $("#setsumei").html("おめでとう！力こそ正義だ！");
+        $("#title").html("👑 YOU WIN 👑");
+      }
+    }
+});
+
+//格闘モード
+$("#kakuto_btn").on("click",function(){
+  mode = "kakuto";
+  $("#title").html("格闘モード");
+  $("#kakuto_btn").fadeOut(0);
+  $("#column1").fadeOut(0);
+  $("#column2").fadeOut(0);
+  $("#setsumei").html("好きな手で攻撃だ！！");
+  $("#tairyoku").fadeIn(5000);
+  $("#column2").html('<img src="img/k1.png" width="500px">');
+  $("#column2").fadeIn(5000);
+  // $("#gauge1").color("yellow");
+  // $("#gu_btn").getElementById("mypic").src="img/k_gu.png";
+  $("#gu_btn").html('<img src="img/k_gu.png" width="100%">');
+  $("#cho_btn").html('<img src="img/k_cho.png" width="100%">');
+  $("#par_btn").html('<img src="img/k_par.png" width="100%">');
+
+  // $("#cho_btn").src("img/k_cho.png");
+  // $("#par_btn").html('<img src="img/k_par.png" width="100%">');
+  // $("#column2").html('<img src="img/l2.png" width="500px">');
+  // console.log("#gu_btn");
+
+});
+
+
+
+
+
+
+
+    
+    
+    
+
+</script>
+</body>
+</html>
